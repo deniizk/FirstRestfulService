@@ -35,15 +35,38 @@ public class DersEndpoints {
         return repo.getById(id);
     }
 
+    //header
+    @GET
+    @Path(value = "getByIdHeader")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Ders getByIdHeader(@HeaderParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ders/getByIdHeader
+        return repo.getById(id);
+    }
+
     @POST
     @Path(value = "save")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public String save(Ders ders)
     {
         // localhost:9090/FirstRestfulService/ders/save
+        //{"KONU_ID": 1,"OGR_ID": 4}
         repo.save(ders);
         return "Başarı ile kaydedildi";
     }
 
-    // localhost:9090/FirstRestfulService/ders/deleteById
+    @DELETE
+    @Path(value = "deleteById/{id}")
+    public String deleteById(@PathParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ders/deleteById/1
+        if (repo.deleteById(id)) {
+            return "Başarılı ile silindi";
+        }
+        else {
+            return "Silinemedi";
+        }
+    }
+
 }

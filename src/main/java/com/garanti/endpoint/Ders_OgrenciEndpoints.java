@@ -35,15 +35,49 @@ public class Ders_OgrenciEndpoints {
         return repo.getById(id);
     }
 
+    //header
+    @GET
+    @Path(value = "getByIdHeader")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Ders_Ogrenci getByIdHeader(@HeaderParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ders_ogrenci/getByIdHeader
+        return repo.getById(id);
+    }
+
+
     @POST
     @Path(value = "save")
     @Consumes(value = MediaType.APPLICATION_JSON)
     public String save(Ders_Ogrenci ders_ogrenci)
     {
         // localhost:9090/FirstRestfulService/ders_ogrenci/save
+        // {
+        //
+        //        "DERS_ID": 1,
+        //
+        //        "DEVAMSIZLIK": 4,
+        //
+        //        "NOTE": 50,
+        //
+        //        "OGRENCI_ID": 1
+        //
+        //    }
         repo.save(ders_ogrenci);
         return "Başarı ile kaydedildi";
     }
 
-    // localhost:9090/FirstRestfulService/ders_ogrenci/deleteById
+    @DELETE
+    @Path(value = "deleteById/{id}")
+    public String deleteById(@PathParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ders_ogrenci//deleteById/1
+        if (repo.deleteById(id)) {
+            return "Başarılı ile silindi";
+        }
+        else {
+            return "Silinemedi";
+        }
+    }
+
 }

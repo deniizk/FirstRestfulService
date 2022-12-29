@@ -2,6 +2,7 @@ package com.garanti.endpoint;
 
 import com.garanti.model.Ogretmen;
 import com.garanti.repo.OgretmenRepo;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -29,7 +30,7 @@ public class OgretmenEndpoints {
     @GET
     @Path(value = "getById")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Ogretmen getByIdQueryParam(@QueryParam(value = "id") Integer id)
+    public Ogretmen getByIdQueryParam(@QueryParam(value = "id") @NotNull(message = "ID olmak zorunda") Integer id)
     {
         // localhost:9090/FirstRestfulService/ogretmen/getById?id=1
         return repo.getById(id);
@@ -47,6 +48,17 @@ public class OgretmenEndpoints {
         return repo.getById(id);
     }
 
+    //header
+    @GET
+    @Path(value = "getByIdHeader")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Ogretmen getByIdHeader(@HeaderParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ogretmen/getByIdHeader
+        return repo.getById(id);
+    }
+
+
     @POST
     @Path(value = "save")
     @Consumes(value = MediaType.APPLICATION_JSON)
@@ -57,6 +69,17 @@ public class OgretmenEndpoints {
         return "Başarı ile kaydedildi";
     }
 
-    // localhost:9090/FirstRestfulService/ogretmen/deleteById
+    @DELETE
+    @Path(value = "deleteById/{id}")
+    public String deleteById(@PathParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ogretmen/deleteById/1
+        if (repo.deleteById(id)) {
+            return "Başarılı ile silindi";
+        }
+        else {
+            return "Silinemedi";
+        }
+    }
 
 }

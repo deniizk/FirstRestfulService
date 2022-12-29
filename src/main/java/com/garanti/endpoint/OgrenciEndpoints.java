@@ -1,7 +1,6 @@
 package com.garanti.endpoint;
 
 import com.garanti.model.Ogrenci;
-import com.garanti.model.Ogretmen;
 import com.garanti.repo.OgrenciRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -36,6 +35,16 @@ public class OgrenciEndpoints {
 
     }
 
+    //header
+    @GET
+    @Path(value = "getByIdHeader")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Ogrenci getByIdHeader(@HeaderParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ogrenci/getByIdHeader
+        return repo.getById(id);
+    }
+
     @POST
     @Path(value = "save")
     @Consumes(value = MediaType.APPLICATION_JSON)
@@ -45,5 +54,17 @@ public class OgrenciEndpoints {
         return "Başarı ile kaydedildi";
     }
 
-    // localhost:9090/FirstRestfulService/ogretmen/deleteById
+    @DELETE
+    @Path(value = "deleteById/{id}")
+    public String deleteById(@PathParam(value = "id") Integer id)
+    {
+        // localhost:9090/FirstRestfulService/ogrenci/deleteById/1
+        if (repo.deleteById(id)) {
+            return "Başarılı ile silindi";
+        }
+        else {
+            return "Silinemedi";
+        }
+    }
+
 }
